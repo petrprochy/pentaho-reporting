@@ -220,7 +220,8 @@ public class SimpleSQLReportDataFactory extends AbstractDataFactory {
     final boolean isNewConnection = connection == null;
     try {
       final ParametrizationProviderFactory factory = createParametrizationProviderFactory();
-      final Connection connection = getConnection( parameters );
+      // Performance optimization for cached values
+      final Connection connection = factory instanceof DefaultParametrizationProviderFactory ? null : getConnection( parameters );
       final ParametrizationProvider parametrizationProvider = factory.create( connection );
       final String computedQuery = computedQuery( query, parameters );
       parametrizationProvider.rewriteQueryForParametrization( connection, computedQuery, parameters );
