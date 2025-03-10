@@ -181,6 +181,7 @@
     <pentaho-metaverse.version>9.4.0.0-343</pentaho-metaverse.version>
     <encryption-support.version>9.4.0.0-343</encryption-support.version>
     <jakarta-annotation-api.version>1.3.5</jakarta-annotation-api.version>
+    <maven-surefire-plugin.argLine>-Duser.language=en -Duser.region=US -Duser.timezone=UTC</maven-surefire-plugin.argLine>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -2605,9 +2606,6 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <systemPropertyVariables>
-            <user.language>en</user.language>
-            <user.region>US</user.region>
-            <user.timezone>UTC</user.timezone>
             <java.awt.headless>true</java.awt.headless>
             <org.pentaho.reporting.engine.classic.test.ExecuteLongRunningTest>${test.long}</org.pentaho.reporting.engine.classic.test.ExecuteLongRunningTest>
             <org.pentaho.reporting.engine.classic.test.ExecutePerformanceTest>${test.performance}</org.pentaho.reporting.engine.classic.test.ExecutePerformanceTest>
