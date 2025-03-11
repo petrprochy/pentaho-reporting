@@ -1,0 +1,34 @@
+Tablemodel contains 1 rows.
+Column: 0 Name=[Product].[(All)]; DataType=class java.lang.String
+Column: 1 Name=[Measures].[Sales]; DataType=class java.lang.Double
+Checking the data inside
+ValueAt (0, 0) is in a typed column and is of type class java.lang.String
+ValueAt (0, 1) is in a typed column and is of type class java.lang.Double
+TableAttribute [http://reporting.pentaho.org/namespaces/engine/meta-attributes/core:crosstab-mode]=normalized
+Tablemodel contains 1 rows.
+Checking the attributes inside
+CellAttribute(0, 0) [http://reporting.pentaho.org/namespaces/engine/meta-attributes/mdx:BACKGROUND_COLOR]=null
+CellAttribute(0, 0) [http://reporting.pentaho.org/namespaces/engine/meta-attributes/mdx:FONT_FLAGS]=null
+CellAttribute(0, 0) [http://reporting.pentaho.org/namespaces/engine/meta-attributes/mdx:FONT_NAME]=null
+CellAttribute(0, 0) [http://reporting.pentaho.org/namespaces/engine/meta-attributes/mdx:FONT_SIZE]=null
+CellAttribute(0, 0) [http://reporting.pentaho.org/namespaces/engine/meta-attributes/mdx:FOREGROUND_COLOR]=null
+CellAttribute(0, 0) [http://reporting.pentaho.org/namespaces/engine/meta-attributes/mdx:FORMAT_STRING]=null
+CellAttribute(0, 0) [http://reporting.pentaho.org/namespaces/engine/meta-attributes/mdx:LANGUAGE]=null
+CellAttribute(0, 0) [http://reporting.pentaho.org/namespaces/engine/meta-attributes/mdx:MDX::ALL_MEMBER]=true
+CellAttribute(0, 0) [http://reporting.pentaho.org/namespaces/engine/meta-attributes/mdx:MDX::CALCULATED]=false
+CellAttribute(0, 0) [http://reporting.pentaho.org/namespaces/engine/meta-attributes/mdx:MDX::CAPTION]=All Products
+CellAttribute(0, 0) [http://reporting.pentaho.org/namespaces/engine/meta-attributes/mdx:MDX::DESCRIPTION]=null
+CellAttribute(0, 0) [http://reporting.pentaho.org/namespaces/engine/meta-attributes/mdx:MDX::HIDDEN]=false
+CellAttribute(0, 1) [http://reporting.pentaho.org/namespaces/engine/meta-attributes/mdx:BACKGROUND_COLOR]=null
+CellAttribute(0, 1) [http://reporting.pentaho.org/namespaces/engine/meta-attributes/mdx:FONT_FLAGS]=0
+CellAttribute(0, 1) [http://reporting.pentaho.org/namespaces/engine/meta-attributes/mdx:FONT_NAME]=null
+CellAttribute(0, 1) [http://reporting.pentaho.org/namespaces/engine/meta-attributes/mdx:FONT_SIZE]=null
+CellAttribute(0, 1) [http://reporting.pentaho.org/namespaces/engine/meta-attributes/mdx:FOREGROUND_COLOR]=null
+CellAttribute(0, 1) [http://reporting.pentaho.org/namespaces/engine/meta-attributes/mdx:FORMAT_STRING]=#,###
+CellAttribute(0, 1) [http://reporting.pentaho.org/namespaces/engine/meta-attributes/mdx:LANGUAGE]=null
+Tablemodel contains 1 rows.
+Column: 0 Name=[Product].[(All)]; DataType=class java.lang.String
+Column: 1 Name=[Measures].[Sales]; DataType=class java.lang.Double
+Checking the data inside
+ValueAt (0, 0) is 'All Products'
+ValueAt (0, 1) is '8665123.840'
