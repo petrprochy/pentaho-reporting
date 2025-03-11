@@ -21,6 +21,7 @@ import mondrian.mdx.MemberExpr;
 import mondrian.olap.CacheControl;
 import mondrian.olap.Connection;
 import mondrian.olap.Cube;
+import mondrian.olap.Dimension;
 import mondrian.olap.Exp;
 import mondrian.olap.Hierarchy;
 import mondrian.olap.Literal;
@@ -63,6 +64,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 import java.util.regex.PatternSyntaxException;
@@ -530,9 +532,9 @@ public abstract class AbstractMDXDataFactory extends AbstractDataFactory {
                              final Cube cube,
                              final String parameter ) throws ReportDataFactoryException {
     try {
-      final Member directValue = yuckyInternalMondrianLookup( query, hierarchy, parameter );
-      if ( directValue != null ) {
-        return directValue;
+      final Optional<Member> directValue = yuckyInternalMondrianLookup( query, hierarchy, parameter );
+      if ( directValue.isPresent() ) {
+        return directValue.get();
       }
     } catch ( Exception e ) {
       // It is non fatal if that fails. Invalid input has this effect.
@@ -541,13 +543,13 @@ public abstract class AbstractMDXDataFactory extends AbstractDataFactory {
     Member memberById = null;
     Member memberByUniqueId = null;
 
-    final boolean searchForNames = MondrianProperties.instance().NeedDimensionPrefix.get() == false;
+    final boolean searchForNames = !MondrianProperties.instance().NeedDimensionPrefix.get();
     final boolean missingMembersIsFatal = MondrianProperties.instance().IgnoreInvalidMembersDuringQuery.get();
 
     try {
-      final Member directValue = lookupDirectly( hierarchy, cube, parameter, searchForNames );
-      if ( directValue != null ) {
-        return directValue;
+      final Optional<Member> directValue = lookupDirectly( hierarchy, cube, parameter, searchForNames );
+      if ( directValue.isPresent() ) {
+        return directValue.get();
       }
     } catch ( Exception e ) {
       // It is non fatal if that fails. Invalid input has this effect.
@@ -570,7 +572,7 @@ public abstract class AbstractMDXDataFactory extends AbstractDataFactory {
                 .warn( "Encountered a member with a duplicate unique key: " + member.getQualifiedName() ); // NON-NLS
             }
           }
-          if ( searchForNames == false ) {
+          if ( !searchForNames ) {
             continue;
           }
           if ( parameter.equals( member.getName() ) ) {
@@ -598,7 +600,7 @@ public abstract class AbstractMDXDataFactory extends AbstractDataFactory {
     return null;
   }
 
-  private Member lookupDirectly( final Hierarchy hierarchy,
+  private Optional<Member> lookupDirectly( final Hierarchy hierarchy,
                                  final Cube cube,
                                  final String parameter,
                                  final boolean searchForNames ) {
@@ -627,7 +629,7 @@ public abstract class AbstractMDXDataFactory extends AbstractDataFactory {
               logger.warn( "Encountered a member with a duplicate key: " + member.getQualifiedName() ); // NON-NLS
             }
           }
-          if ( searchForNames == false ) {
+          if ( !searchForNames ) {
             continue;
           }
           if ( parameter.equals( member.getName() ) ) {
@@ -642,48 +644,33 @@ public abstract class AbstractMDXDataFactory extends AbstractDataFactory {
     } finally {
       resultDirect.close();
     }
-    if ( memberByUniqueId != null ) {
-      final Hierarchy memberHierarchy = memberByUniqueId.getHierarchy();
-      if ( hierarchy != memberHierarchy ) {
-        if ( ObjectUtilities.equal( hierarchy, memberHierarchy ) == false ) {
-          logger
-            .warn( "Cannot match hierarchy of member found with the hierarchy specfied in the parameter: " // NON-NLS
-              + "Unabe to guarantee that the correct member has been queried, returning null." ); // NON-NLS
-          return null;
-        }
-      }
-      return memberByUniqueId;
+    final Optional<Member> uniqueId = checkHierarchyOrDimension( hierarchy, memberByUniqueId );
+    if ( uniqueId.isPresent() ) {
+      return uniqueId;
     }
-    if ( memberById != null ) {
-      final Hierarchy memberHierarchy = memberById.getHierarchy();
-      if ( hierarchy != memberHierarchy ) {
-        if ( ObjectUtilities.equal( hierarchy, memberHierarchy ) == false ) {
-          logger
-            .warn( "Cannot match hierarchy of member found with the hierarchy specfied in the parameter: " // NON-NLS
-              + "Unabe to guarantee that the correct member has been queried, returning null" ); // NON-NLS
-          return null;
-        }
-      }
-      return memberById;
-    }
-    return null;
+    return checkHierarchyOrDimension( hierarchy, memberById );
   }
 
-  protected Member yuckyInternalMondrianLookup( final Query query, final Hierarchy hierarchy, final String parameter ) {
+  protected Optional<Member> yuckyInternalMondrianLookup( final Query query, final Hierarchy hierarchy, final String parameter ) {
     final Member memberById = (Member) Util.lookup( query, Util.parseIdentifier( parameter ) );
-    if ( memberById != null ) {
-      final Hierarchy memberHierarchy = memberById.getHierarchy();
-      if ( hierarchy != memberHierarchy ) {
-        if ( ObjectUtilities.equal( hierarchy, memberHierarchy ) == false ) {
-          logger
-            .warn( "Cannot match hierarchy of member found with the hierarchy specfied in the parameter: " // NON-NLS
-              + "Unabe to guarantee that the correct member has been queried, returning null" ); // NON-NLS
-          return null;
-        }
-      }
-      return memberById;
+    return checkHierarchyOrDimension( hierarchy, memberById );
+  }
+
+  private Optional<Member> checkHierarchyOrDimension( Hierarchy hierarchy, Member member) {
+    if ( member == null ) {
+      return Optional.empty();
     }
-    return null;
+    final Hierarchy mh = member.getHierarchy();
+    if ( hierarchy != mh || !ObjectUtilities.equal( hierarchy, mh ) ) {
+      final Dimension d = hierarchy.getDimension();
+      final Dimension md = mh.getDimension();
+      if ( d != md || !ObjectUtilities.equal( d, md ) ) {
+        logger.warn( "Cannot match hierarchy of member found with the hierarchy specified in the parameter: " // NON-NLS
+          + "Unable to guarantee that the correct member has been queried, returning null" ); // NON-NLS
+        return Optional.empty();
+      }
+      }
+    return Optional.of( member );
   }
 
   protected int extractQueryLimit( final DataRow parameters ) {
