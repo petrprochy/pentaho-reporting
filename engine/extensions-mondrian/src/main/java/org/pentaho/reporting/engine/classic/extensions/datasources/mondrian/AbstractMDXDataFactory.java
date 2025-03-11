@@ -553,8 +553,8 @@ public abstract class AbstractMDXDataFactory extends AbstractDataFactory {
       // It is non fatal if that fails. Invalid input has this effect.
     }
 
-    final Query memberQuery = connection.parseQuery( "SELECT " + hierarchy.getQualifiedName() // NON-NLS
-      + ".AllMembers ON 0, {} ON 1 FROM " + cube.getQualifiedName() ); // NON-NLS
+    final Query memberQuery = connection.parseQuery( "SELECT " + hierarchy.getUniqueName() // NON-NLS
+      + ".AllMembers ON 0, {} ON 1 FROM " + cube.getUniqueName() ); // NON-NLS
     final Result result = connection.execute( memberQuery );
     try {
       final List<Position> positionList = result.getAxes()[ 0 ].getPositions();
@@ -606,7 +606,7 @@ public abstract class AbstractMDXDataFactory extends AbstractDataFactory {
     Member memberByUniqueId = null;
     final Query queryDirect =
       connection.parseQuery( "SELECT STRTOMEMBER(" + quote( parameter ) + ") ON 0, {} ON 1 FROM " // NON-NLS
-        + cube.getQualifiedName() );
+        + cube.getUniqueName() );
     final Result resultDirect = connection.execute( queryDirect );
     try {
       final List<Position> positionList = resultDirect.getAxes()[ 0 ].getPositions();
