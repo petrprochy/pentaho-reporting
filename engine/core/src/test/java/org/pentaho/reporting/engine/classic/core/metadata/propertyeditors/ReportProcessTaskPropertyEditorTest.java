@@ -17,6 +17,13 @@
 
 package org.pentaho.reporting.engine.classic.core.metadata.propertyeditors;
 
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.pentaho.reporting.engine.classic.core.ClassicEngineBoot;
+import org.pentaho.reporting.engine.classic.core.metadata.ReportProcessTaskMetaData;
+import org.pentaho.reporting.engine.classic.core.metadata.ReportProcessTaskRegistry;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -24,12 +31,6 @@ import static org.hamcrest.Matchers.arrayContainingInAnyOrder;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.pentaho.reporting.engine.classic.core.metadata.ReportProcessTaskMetaData;
-import org.pentaho.reporting.engine.classic.core.metadata.ReportProcessTaskRegistry;
 
 public class ReportProcessTaskPropertyEditorTest {
 
@@ -39,6 +40,7 @@ public class ReportProcessTaskPropertyEditorTest {
 
   @BeforeClass
   public static void init() {
+    ClassicEngineBoot.getInstance().start();
     exportTask = mock( ReportProcessTaskMetaData.class );
     doReturn( "test_export_type" ).when( exportTask ).getName();
     ReportProcessTaskRegistry.getInstance().registerExportType( exportTask );

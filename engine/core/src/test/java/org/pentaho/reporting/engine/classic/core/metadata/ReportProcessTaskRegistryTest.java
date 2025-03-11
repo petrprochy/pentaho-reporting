@@ -18,6 +18,7 @@
 package org.pentaho.reporting.engine.classic.core.metadata;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
 
 import junit.framework.TestCase;
 
@@ -41,7 +42,7 @@ public class ReportProcessTaskRegistryTest extends TestCase {
   public void testRegistrationComplete() {
     final ReportProcessTaskRegistry registry = ReportProcessTaskRegistry.getInstance();
     assertTrue( registry.getExportTypes().length > 0 );
-    assertTrue( registry.isExportTypeRegistered( "pageable/X-AWT-Graphics" ) );
+    assertTrue( Arrays.toString( registry.getExportTypes() ), registry.isExportTypeRegistered( "pageable/X-AWT-Graphics" ) );
 
     final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
     final ReportProcessTask processTask = registry.createProcessTask( "pageable/X-AWT-Graphics" );
