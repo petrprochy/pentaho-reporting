@@ -4,10 +4,10 @@
   <parent>
     <groupId>org.pentaho.reporting.engine</groupId>
     <artifactId>reporting-engine</artifactId>
-    <version>9.4.0.0-343-1-SNAPSHOT</version>
+    <version>9.4.0.0-343-1</version>
   </parent>
   <artifactId>classic-extensions-toc</artifactId>
-  <version>9.4.0.0-343-1-SNAPSHOT</version>
+  <version>9.4.0.0-343-1</version>
   <licenses>
     <license>
       <name>GNU Lesser General Public License, version 2.1</name>
