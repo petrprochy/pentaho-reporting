@@ -4,11 +4,11 @@
   <parent>
     <groupId>org.pentaho.reporting</groupId>
     <artifactId>pentaho-reporting</artifactId>
-    <version>9.4.0.0-343-2</version>
+    <version>9.4.0.0-343-3-SNAPSHOT</version>
   </parent>
   <groupId>org.pentaho.reporting.engine</groupId>
   <artifactId>reporting-engine</artifactId>
-  <version>9.4.0.0-343-2</version>
+  <version>9.4.0.0-343-3-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Pentaho Reporting Engine Modules</name>
   <properties>
