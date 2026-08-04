@@ -4,10 +4,10 @@
   <parent>
     <groupId>org.pentaho.reporting.engine</groupId>
     <artifactId>reporting-engine</artifactId>
-    <version>9.4.0.0-343-2-SNAPSHOT</version>
+    <version>9.4.0.0-343-2</version>
   </parent>
   <artifactId>wizard-core</artifactId>
-  <version>9.4.0.0-343-2-SNAPSHOT</version>
+  <version>9.4.0.0-343-2</version>
   <licenses>
     <license>
       <name>GNU Lesser General Public License, version 2.1</name>
