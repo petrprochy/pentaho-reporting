@@ -28,6 +28,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.util.WorkbookUtil;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.pentaho.reporting.engine.classic.core.ImageContainer;
 import org.pentaho.reporting.engine.classic.core.layout.model.PhysicalPageBox;
@@ -239,18 +240,13 @@ public abstract class ExcelPrinterBase {
     if ( sheetName == null ) {
       return workbook.createSheet();
     } else {
-      final String uniqueSheetname = makeUnique( sheetName );
-      if ( uniqueSheetname.length() == 0 || uniqueSheetname.length() > 31 ) {
-        logger.warn( "A sheet name must not be empty and greater than 31 characters" );
-        return workbook.createSheet();
-      } else if ( isValidSheetName( uniqueSheetname ) == false ) {
-        logger.warn( "A sheet name must not contain any of ':/\\*?[]'" );
-        // OpenOffice is even more restrictive and only allows Letters,
-        // Digits, Spaces and the Underscore
-        return workbook.createSheet();
-      } else {
-        return workbook.createSheet( uniqueSheetname );
-      }
+        final String uniqueSheetName = makeUnique( WorkbookUtil.createSafeSheetName( sheetName ) );
+        if ( uniqueSheetName.length() > 31 ) {
+          logger.warn( "A sheet name must not be greater than 31 characters: " + uniqueSheetName  );
+          return workbook.createSheet();
+        } else {
+          return workbook.createSheet( uniqueSheetName );
+        }
     }
   }
 
